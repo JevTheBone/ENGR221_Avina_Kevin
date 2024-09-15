@@ -1,0 +1,39 @@
+Sets are another type of data structure with the following properties:
+    (a) All items in the set are unique (i.e., no duplicates)
+    (b) Sets are unordered (similar to arrays)
+    (c) Sets are unindexed (unlike arrays)
+
+Implement a MySet class with a constructor __init__() 
+The following functions must be created: search(), insert(), delete(), traverse()
+
+__init__(self, setList)
+    Create an objects 'self.__s' and 'self.__size'
+    'self.__s' will store values of type(list)
+        if there are duplicates values only add them once into 'self.__s'
+
+    'self.__size' holds the number of values in the set of type(int)
+
+search(self, value)
+    Look for an value within the range of 'self.__size'
+        If 'self.__s' at value is found in the MySet
+        return True
+        Otherwise return False
+
+insert(self, value)
+    Increment MySet size by one
+    Append a new value into setList
+
+delete(self, value)
+    Call upon the search method to look for the value we want to delete
+        If value is found in our setList
+            Then delete value by reducing the size of setList
+            Shift remaining values in range of the set size
+            Update set size the number of values in setList
+        Return True if value was deleted
+        Otherwise return False if item is not found
+
+traverse(self)
+    Look through setList for values in range of set size
+    Print setList
+
+        

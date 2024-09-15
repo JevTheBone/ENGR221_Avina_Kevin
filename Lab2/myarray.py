@@ -39,11 +39,11 @@ class MyArray():
     
     # Insert value to the end of the array
     def insert(self, value):
-        self.__a[self.__length] = value
+        self.__length += 1  #increment length
 
-        # Increment the length
-        self.__length += 1   
-
+        self.__a.append(value) #Ask someone to explain this part - why couldn't it add a new item after increasing length without
+                               #using the append method?
+        
     # Return the index of value in the array, 
     # or -1 if value is not in the array
     def search(self, value):
@@ -75,6 +75,11 @@ class MyArray():
             # Shift all the remaining values 
             for j in range(idx, self.__length):
                 self.__a[j] = self.__a[j+1]
+            
+            self.__a = self.__a[:self.__length] # Sets array list size to the newly decreased size value
+
+            if self.search(value) != -1:    # Checks array again for duplicate instances
+                self.delete(value)
 
             # Return that value was deleted
             return True
