@@ -17,7 +17,13 @@ class MazeSolver:
         # ~~~~~~~~
         # Write your tileIsVisitable() implementation here
         # ~~~~~~~~
-        pass
+         if (row >= maze.num_row or row < 0) or (col >= maze.num_col or col < 0):
+             return False
+         if self.maze.contents[row][col].isWall() == True:
+             return False
+         if self.maze.contents[row][col].isVisited == True:
+             return False
+         return True
 
     def solve(self):
         # ~~~~~~~~
