@@ -1,5 +1,8 @@
 """
-WRITE YOUR PROGRAM HEADER HERE
+Name: Kevin Avina-Gutierrez
+SearchStructures.py
+Description: Implement a stack with the necessary functions to check if stack is empty,
+update the top item in the stack and show an item from the stack.
 """
 
 # Implementation of a Stack
