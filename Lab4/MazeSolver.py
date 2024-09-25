@@ -14,21 +14,41 @@ class MazeSolver:
         self.ss = searchStructure()  # Initialize a searchStructure object
 
     def tileIsVisitable(self, row:int, col:int) -> bool:
-        # ~~~~~~~~
-        # Write your tileIsVisitable() implementation here
-        # ~~~~~~~~
-         if (row >= maze.num_row or row < 0) or (col >= maze.num_col or col < 0):
+         # Check if the tile is within the maze bounds
+         if (row > self.maze.num_rows and row < 0) and (col > self.maze.num_cols and col < 0):
              return False
-         if self.maze.contents[row][col].isWall() == True:
-             return False
-         if self.maze.contents[row][col].isVisited == True:
-             return False
+         # Check if tile is a wall
+         if self.maze.contents[row][col].isWall == True:
+            return False
+         # Check if tile has already been visited
+         if self.maze.contents[row][col].visited == True:
+            return False
          return True
 
     def solve(self):
         # ~~~~~~~~
         # Write your solve() implementation here
         # ~~~~~~~~
+        # Add starting tile
+        self.ss.add(maze.start)
+        # As long as ss isn't empty
+        while not self.ss.isEmpty():
+            # Remove the next tile from ss and store it in current value
+            current = self.maze.contents.remove()
+            # Mark current as visited
+            current.maze.visit
+            # If current is the goal tile
+            if current.goal == True:
+                return current
+            else:
+                # Tile Movement (up, down, left, right) for current
+                movement = ([-1][0],[0][+1],[1][0],[0][-1])
+                for self.maze.contents in range(self.maze.contents[movement]):
+                    # Set neighbor's previous tile to current
+                    self.ss.__previous = current
+                    # add neighbor to ss
+                    self.ss.add(maze.__previous)
+        return None
         pass
 
      # Add any other helper functions you might want here

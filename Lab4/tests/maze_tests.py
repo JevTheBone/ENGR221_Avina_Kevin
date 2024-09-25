@@ -1,4 +1,4 @@
-#import pytest
+import pytest
 
 from ..SearchStructures import Stack, Queue 
 from ..Maze import Maze
