@@ -1,8 +1,11 @@
 """
-WRITE YOUR PROGRAM HEADER HERE
+Name: Kevin Avina-Gutierrez
+MazeSolver.py
+Description: Implement an algorithm to find a path between two points in a 2D grid leveraging
+your Stack and Queue classes from SearchStructures.py
 """
-from SearchStructures import Stack, Queue
-from Maze import Maze
+from .SearchStructures import Stack, Queue
+from .Maze import Maze
 
 class MazeSolver:
     # Constructor
@@ -15,41 +18,42 @@ class MazeSolver:
 
     def tileIsVisitable(self, row:int, col:int) -> bool:
          # Check if the tile is within the maze bounds
-         if (row > self.maze.num_rows and row < 0) and (col > self.maze.num_cols and col < 0):
+         if (row >= self.maze.num_rows or row < 0) or (col >= self.maze.num_cols or col < 0):
              return False
          # Check if tile is a wall
-         if self.maze.contents[row][col].isWall == True:
+         if (self.maze.contents[row][col].isWall() == True):
             return False
          # Check if tile has already been visited
-         if self.maze.contents[row][col].visited == True:
+         if (self.maze.contents[row][col].visited() == True):
             return False
          return True
 
     def solve(self):
-        # ~~~~~~~~
-        # Write your solve() implementation here
-        # ~~~~~~~~
         # Add starting tile
-        self.ss.add(maze.start)
+        self.ss.add(self.maze.start)
         # As long as ss isn't empty
         while not self.ss.isEmpty():
             # Remove the next tile from ss and store it in current value
-            current = self.maze.contents.remove()
+            current = self.ss.remove()
             # Mark current as visited
-            current.maze.visit
-            # If current is the goal tile
-            if current.goal == True:
+            current.visit()
+            # If current tile in the maze is the goal tile
+            if current == self.maze.goal:
+                self.ss.add(current)
                 return current
-            else:
-                # Tile Movement (up, down, left, right) for current
-                movement = ([-1][0],[0][+1],[1][0],[0][-1])
-                for self.maze.contents in range(self.maze.contents[movement]):
-                    # Set neighbor's previous tile to current
-                    self.ss.__previous = current
-                    # add neighbor to ss
-                    self.ss.add(maze.__previous)
+            # Tile Movement (up, down, right, left) for current
+            movement = [(0,-1),(0,1),(1,0),(-1,0)]
+            # For i = row and j = col, adjust current row and col values by adding the directions of movement
+            for i, j in reversed(movement):
+                # If tile is visitable by adding i and j to the current values
+                if self.tileIsVisitable(current.getRow() + i, current.getCol() + j):
+                    # Then update the values by adding i and j to current tile and assign it to "next tile"
+                    next_tile = self.maze.contents[current.getRow() + i][current.getCol() + j]
+                    # Sets the previous tile prior to next.tile
+                    next_tile.setPrevious(current)
+                    # Add next tile to SearchStructures.py
+                    self.ss.add(next_tile)
         return None
-        pass
 
      # Add any other helper functions you might want here
 
@@ -57,6 +61,17 @@ class MazeSolver:
         # ~~~~~~~~
         # Write your getPath() implementation here
         # ~~~~~~~~
+        path = []
+        end = self.maze.goal
+        last = end.getPrevious()
+        # While the last visited tile isn't None or the start of the maze
+        while last is not None and last != self.maze.start:
+            # Add last tile to Path list
+            path.append(last)
+            # Sets our previous to the tile prior to last
+            last = last.getPrevious()
+        path.append(self.maze.start)
+        return path[::-1]
         pass 
 
     # Print the maze with the path of the found solution

@@ -32,7 +32,6 @@ class Stack():
         # Decrease stack size by removing the previous value place
         self.__items = self.__items[:-1]
         return temp
-        pass
     
 # Implementation of a Queue
 class Queue():
@@ -60,6 +59,3 @@ class Queue():
         # Assign queue value at index '1'
         self.__items = self.__items[1:]
         return temp
-        pass
-    
-    
