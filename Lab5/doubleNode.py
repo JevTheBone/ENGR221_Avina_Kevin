@@ -1,5 +1,8 @@
 """
-WRITE YOUR PROGRAM HEADER HERE
+Kevin Avina-Gutierrez
+doubleNode.py
+Implement bi-directional nodes "Double Nodes"
+These nodes should have a pointer to the previous node in the list.
 """
 
 class DoubleNode():
@@ -12,37 +15,51 @@ class DoubleNode():
     #####
     # Methods
     #####
-        
+        # Checks whether or not the given node is first in the list
     def isFirst(self) -> bool:
-        pass
+        # Returns True only if it meets these two requirements, 
+        # "None" for previous and next nodes.
+        while self.__previousNode == None and self.__nextNode == None:
+            return True
         
+        # Check whether or not the given node is last in the list
     def isLast(self) -> bool:
-        pass
-
+        # Returns True for either or of these requirements, 
+        # previous isn't "None" or next node is "None".
+        while self.__previousNode != None or self.__nextNode == None:
+            return True
+        
     #####
     # Getters
     #####
-
+        # Return the value of the current double node
     def getValue(self):
-        pass
+        return self.__value
     
+        # Return the value of the next Node in the list
     def getNextNode(self):
-        pass
-
+        return self.__nextNode
+    
+        # Return the previous node in the list
     def getPreviousNode(self):
-        pass
+        return self.__previousNode
 
     #####
     # Setters
     #####
-
+        # Set the value of the node to a new value
     def setValue(self, new_value) -> None:
+        self.__value = new_value
         pass
 
+        # Set the value of the new next node
     def setNextNode(self, new_next) -> None:
+        self.__nextNode = new_next
         pass
 
+        # Set the value of the new previous node
     def setPreviousNode(self, new_previous) -> None:
+        self.__previousNode = new_previous
         pass
 
     #####
@@ -55,7 +72,8 @@ class DoubleNode():
         return True
     
     def __str__(self):
-        pass
+        # Overloads the built in __str__() method so this will be run when printing a node.
+        return str(self.getValue())
 
 if __name__ == "__main__":
     pass

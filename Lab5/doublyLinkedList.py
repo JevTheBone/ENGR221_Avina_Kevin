@@ -1,26 +1,33 @@
 """
-WRITE YOUR PROGRAM HEADER HERE
+Kevin Avina-Gutierrez
+doublyLinkedList.py
+Implement a doubly linked list which keeps track of both the first and last nodes
+in the list, allowing you to traverse from both ends of the list.
 """
 
 from .doubleNode import DoubleNode 
 
 class DoublyLinkedList():
 
+    # Implements the first and last node in the linked list
     def __init__(self):
         self.__firstNode = None
         self.__lastNode = None 
 
-    def isEmpty(self):
-        pass
+    # Determine whether or not the list is empty
+    def isEmpty(self) -> bool:
+        if self.getFirstNode().__nextNode == None and self.getLastNode().__previousNode == None:
+            return True
 
+    
     def first(self):
         pass
     
-    def getFirstNode(self):
-        pass
+    def getFirstNode(self) -> DoubleNode:
+        return self.__firstNode
 
-    def getLastNode(self):
-        pass
+    def getLastNode(self) -> DoubleNode:
+        return self.__lastNode
     
     def setFirstNode(self, node):
         pass
