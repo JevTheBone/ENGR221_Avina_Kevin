@@ -17,17 +17,11 @@ class DoubleNode():
     #####
         # Checks whether or not the given node is first in the list
     def isFirst(self) -> bool:
-        # Returns True only if it meets these two requirements, 
-        # "None" for previous and next nodes.
-        while self.__previousNode == None and self.__nextNode == None:
-            return True
+        return self.__previousNode == None
         
         # Check whether or not the given node is last in the list
     def isLast(self) -> bool:
-        # Returns True for either or of these requirements, 
-        # previous isn't "None" or next node is "None".
-        while self.__previousNode != None or self.__nextNode == None:
-            return True
+        return self.__nextNode == None
         
     #####
     # Getters
@@ -50,17 +44,14 @@ class DoubleNode():
         # Set the value of the node to a new value
     def setValue(self, new_value) -> None:
         self.__value = new_value
-        pass
 
         # Set the value of the new next node
     def setNextNode(self, new_next) -> None:
         self.__nextNode = new_next
-        pass
 
         # Set the value of the new previous node
     def setPreviousNode(self, new_previous) -> None:
         self.__previousNode = new_previous
-        pass
 
     #####
     # Helpers
