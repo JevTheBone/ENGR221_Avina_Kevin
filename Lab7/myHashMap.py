@@ -40,31 +40,31 @@ class MyHashMap:
         # Adds the specified key using hash function
         keyHash = hash(key)
         # TODO: write your replace implementation here
-        if key == None:
-            raise Exception("Error: key is None.")
-        
-        # Mod keyHash value by the current capacity value, store value within "index"
-        index = keyHash % self.capacity
-        print(self.capacity, index)
-        
-        # Using the existing HashMapEntry function we designate key and value to a hashEntry
+        # Checks that key isn't None
+        if key is None:
+            raise Exception("Error: key can't be None.")    
+
+        # Calculate bucket index before adding entry into self.buckets
+        bucket_index = keyHash % self.capacity
+        # Using MapEntry constructor we assign key value pair to hashEntry
         hashEntry = self.MyHashMapEntry(key, value)
 
-        # Base statement: index greator than/equal to 0 and self.capacity
-        if index >= 0 and index < self.capacity:
-        # Given that the index meets requirements, next compare size to that of load * cap
-            if self.size < self.capacity * self.load_factor:
-                # Call rezise function and exit second loop
-                self.resize() 
-        # increase size of hash map by 1
-            self.size += 1
-        # Add our hashEntry to self.buckets with the specified index and return True
-            self.buckets[index].append(hashEntry)
-            return True
-        # exit first loop and return false if index doesn't meet specified requirements
-        return False
-
-        
+        # If adding a new key would surpass load_factor 
+        # Call resize method to increase capacity 
+        if ((self.size + 1) / self.capacity > self.load_factor):
+            self.resize()
+            
+        # Checks bucket index for duplicates, 
+        # Returns false if key exists
+        for entry in self.buckets[bucket_index]:
+            if entry.key == key:
+                return False
+                
+        # Since key isn't a duplicate and we have enough capacity
+        # Add key-value pair and increment size
+        self.buckets[bucket_index].append(hashEntry)
+        self.size += 1
+        return True 
 
     """
     Replaces the value that maps to the given key if it is present.
@@ -74,7 +74,23 @@ class MyHashMap:
     Raise an exception if the key is None. """
     def replace(self, key, newValue):
         # TODO: write your replace implementation here
-        pass
+        # Checks that key isn't None
+        if key is None:
+            raise Exception("Error: key can't be None.")
+
+        # Calculate bucket index
+        bucket_index = hash(key) % self.capacity
+
+        # Check if the key exists in the corresponding bucket list
+        for entry in self.buckets[bucket_index]:
+            # If key found, replace value assigned to key 
+            # with newValue and return True
+            if entry.key == key:
+                entry.value = newValue
+                return True
+                
+        # Return false if key is not found
+        return False
 
     """
     Remove the entry corresponding to the given key.
@@ -82,7 +98,23 @@ class MyHashMap:
     Raise an exception if the key is None. """
     def remove(self, key):
         # TODO: write your remove implementation here
-        pass 
+        # Checks that key isn't None
+        if key is None:
+            raise Exception("Error: key can't be None.")
+
+        # Calculate bucket index
+        bucket_index = hash(key) % self.capacity
+
+        # Check if the key exists in the corresponding bucket list
+        for entry in self.buckets[bucket_index]:
+            # If key is found, remove the entry 
+            # corresponding to the given key
+            if entry.key == key:
+                self.buckets[bucket_index].remove(entry)
+                return True
+            
+        # Return false if key is not found
+        return False
 
     """
     Adds the key, value pair to the MyHashMap if it is not present.
@@ -90,7 +122,16 @@ class MyHashMap:
     Raise an exception if the key is None. """
     def set(self, key, value):
         # TODO: Write your set implementation here
-        pass 
+        # Checks that key isn't None
+        if key is None:
+            raise Exception("Error: key can't be None.")
+
+        # Call replace method for key, value pair
+        if not self.replace(key, value):
+            # If replace() method returns false, key was not found
+            # Add the new entry in the appropriate bucket
+            self.put(key, value)
+        return
 
     """
     Return the value of the specified key. If the key is not in the
@@ -98,34 +139,70 @@ class MyHashMap:
     Raise an exception if the key is None. """
     def get(self, key):
         # TODO: Write your get implementation here 
-        pass 
+        # Checks that key isn't None
+        if key is None:
+            raise Exception("Error: key can't be None.")
+
+        # Calculate bucket index
+        bucket_index = hash(key) % self.capacity
+
+        # Check if the key is in bucket lists
+        for entry in self.buckets[bucket_index]:
+            # Returns value of the specified key
+            if entry.key == key:
+                return entry.value
+        # Key does not exist in MyHashMap
+        return None
 
     """
     Return the number of key, value pairs in this MyHashMap. """
     def size(self):
         # TODO: Write your size implementation here 
-        pass 
+        # Returns number of key, value pairs
+        return self.size 
 
     """
     Return true if the MyHashMap contains no elements, and 
     false otherwise. """
-    def isEmpty(self):
+    def isEmpty(self) -> bool:
         # TODO: Write your isEmpty implementation here
-        pass 
-
+        # Returns True if hashmap is empty, False if there
+        # are elements present
+        return self.size == 0
+         
     """
     Return true if the specified key is in this MyHashMap. 
     Raise an exception if the key is None. """
     def containsKey(self, key):
         # TODO: Write your containsKey implementation here 
-        pass 
+        # Check that key isn't None
+        if key is None:
+            raise Exception("Error: key can't be None.") 
+        
+        # Calculate index value
+        bucket_index = hash(key) % self.capacity
+        
+        # Loops through bucket list and returns true if key is found
+        for entry in self.buckets[bucket_index]:
+            if entry.key == key:
+                return True
+        return False
 
     """
     Return a list containing the keys of this MyHashMap. 
     If it is empty, return an empty list. """
     def keys(self):
         # TODO: Write your keys implementation here
-        pass 
+        # Initialize list of keys
+        keyList = []
+
+        # Iterate through each bucket in bucket list
+        for bucket in self.buckets:
+            # Look at each entry in bucket
+            for entry in bucket:
+                # Add each key entry to the list of keys
+                keyList.append(entry.key)
+        return keyList 
 
     class MyHashMapEntry:
         def __init__(self, key, value):
