@@ -46,17 +46,17 @@ class Box:
     Should not modify the Box itself. 
     Return None if the Entry does not exist in the Box. """
     def find(self, nickname, species):
-        # Check that Entry isn't None
-        if nickname is None or species is None:
-            raise Exception("Error: nickname can't be None.")
-
+        
         # Ensure nickname exists in our Box
         # Returns none if it doesn't
-        if not self.nicknameMap.containsKey(nickname):
-            return None
+        entry = self.nicknameMap.get(nickname)
         
-        # Return Entry object 
-        return self.nicknameMap.get(nickname)
+        # If the entry exists, return it
+        if entry:
+            return entry
+        
+        # If it doesn't exist return None
+        return None
 
     """ 
     Return a list of nickanames representing all unique 

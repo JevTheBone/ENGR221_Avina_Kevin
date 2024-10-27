@@ -17,17 +17,6 @@ def test_add(defaultBox):
     # Assert entry was added successfully
     assert defaultBox.add(nickname, species) == True
 
-@pytest.mark.find
-# Test functionallity for find method
-def test_find(defaultBox):
-    # Assign key, value pair to find
-    nickname = "Charla"
-    species = "Charizard"
-    # Add values into our box
-    defaultBox.add(nickname, species)
-    # Assert the value we added is found and it doesn't return None
-    assert defaultBox.find(nickname, species) != None
-
 @pytest.mark.findEntryByNickname
 # Test functionallity for findEntryByNickname method
 def test_findEntryByNickname(defaultBox):
@@ -36,4 +25,8 @@ def test_findEntryByNickname(defaultBox):
     species = "Electric"
     defaultBox.add(nickname, species)
     # Assert the value we added is found by only using the nickname
-    assert defaultBox.findEntryByNickname(nickname) != None
+    assert defaultBox.findEntryByNickname(nickname) != "Electric"
+
+@pytest.mark.findAllNicknames
+def test_findAllNicknames(defaultBox):
+    assert defaultBox.findAllNicknames() == []

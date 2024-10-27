@@ -60,11 +60,11 @@ class MyHashMap:
             if entry.key == key:
                 return False
                 
-        # Since key isn't a duplicate and we have enough capacity
-        # Add key-value pair and increment size
-        self.buckets[bucket_index].append(hashEntry)
-        self.size += 1
-        return True 
+            # Since key isn't a duplicate and we have enough capacity
+            # Add key-value pair and increment size
+            self.buckets[bucket_index].append(hashEntry)
+            self.size += 1
+            return True 
 
     """
     Replaces the value that maps to the given key if it is present.

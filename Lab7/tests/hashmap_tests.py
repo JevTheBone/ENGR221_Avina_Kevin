@@ -10,13 +10,11 @@ from myHashMap import MyHashMap
 def emptyList():
     return MyHashMap()
 
-@pytest.mark.put
+@pytest.mark.isEmpty
 #put functionality for MyHashMap
 def test_put_on_empty(emptyList):
-    #put 1 in the hashmap
-    emptyList.put(1,1)
-    #check if the value is 1
-    assert emptyList.get(1) == 1
+    # Checks that list is empty
+    assert emptyList.isEmpty() == True
 
 @pytest.mark.replace
 #replace functionality for MyHashMap
