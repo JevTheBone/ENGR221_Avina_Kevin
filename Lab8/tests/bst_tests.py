@@ -83,7 +83,7 @@ def test_bst_lookup_present(nonemptyTree):
 
 @pytest.mark.lookup
 # lookup functionality for a BST
-def test_bst_lookup_present(nonemptyTree):
+def test_bst_lookup_notpresent(nonemptyTree):
     try:
         # This should throw an exception
         nonemptyTree.lookup(4)

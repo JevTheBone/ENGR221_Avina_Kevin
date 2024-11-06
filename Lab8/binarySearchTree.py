@@ -48,8 +48,7 @@ class BinarySearchTree:
         return node
 
     def isEmpty(self):
-        """ isEmpty method checks whether the BST
-            is empty - hence the name.
+        """ isEmpty method checks whether the BST is empty - hence the name.
             Arguments: None
             Returns Boolean output T/F.
         """
@@ -91,34 +90,113 @@ class BinarySearchTree:
             return self.__searchHelp(node.right, goalKey)
 
     def lookup(self, goal):
-        """ LOOKUP DOCUMENTATION HERE """
-        pass
+        """ Get the value of the given key
+            Arguments: goal - The key whose value to return
+            Returns: the value of the goal key  
+        """
+        # Call search to find the node with the specified key
+        node = self.search(goal)
+
+        # Check if the node was found, key does not exist in the tree return None
+        if node is None:
+            return None 
+        # Return the value associated with the found node
+        else:
+            return node.value 
 
     def findSuccessor(self, subtreeRoot):
-        """ FINDSUCCESSOR DOCUMENTATION HERE """
+        """ Finds the smallest node in the tree """
         return self.__findSuccessorHelp(subtreeRoot)
     
     def __findSuccessorHelp(self, node):
-        """ __FINDSUCCESSOR DOCUMENTATION HERE """
-        pass
+        """ A recursive mehtod to help with the findSuccessor() method,
+            which find the samllest node in the tree
+            Arguments: node - the root node of the subtree to find the successor
+            Returns: The successor     
+        """
+        # Node to the left will be the smallest if node.left is none
+        if node.left is None:
+            return node
+        # Since it isn't the smallest we must continue moving down
+        # the left subtree
+        else: 
+            return self.__findSuccessorHelp(node.left)
     
     def delete(self, deleteKey):
-        """ DELETE DOCUMENTATION HERE """
+        """ Deletes the node with the given key from the BST """
         if self.search(deleteKey):
             return self.__deleteHelp(self.__root, deleteKey)
         raise Exception("Key not in tree.")
     
     def __deleteHelp(self, node, deleteKey):
-        """ __DELETEHELP DOCUMENTATION HERE """
-        pass
+        """ A recurvise method to help with the delete() method, which
+            deletes the node with the given key from the BST
+            Arguments:
+                node - root node of the subtree to delete from
+                deleteKey - key we will be deleting
+            Returns: the udpated node with the specified node deleted 
+        """
+        # If node is None, return None indicating key was not found in BST
+        if node is None:
+            return None
+        
+        # Compare DeleteKey with node.key
+        if deleteKey < node.key:
+            # Assign results to node.left and call __deleteHelp() method
+            # Recursively search in the left subtree
+            node.left = self.__deleteHelp(node.left, deleteKey)
+            return node
+        # Compare DeleteKey with node.key
+        elif deleteKey > node.key:
+            # Assign results to node.right and call __deleteHelp() method
+            # Recursively search in the right subtree
+            node.right = self.__deleteHelp(node.right, deleteKey)
+            return node
+        # If key to delete and node.key are the same
+        else:
+            # Compare different cases that need to be address before deleting
+            # Node has no children
+            if node.right is None and node.left is None:
+                # This removes the node by returning None
+                return None
+            # Node has one child
+            elif node.left is None:
+                # Replace node with its right child
+                return node.right
+            elif node.right is None:
+                # Replace node with its left child
+                return node.left
+            # Node has two children
+            else:
+                # Find the in-order successfor, this case it requires the smallest node in the right
+                successor = self.findSuccessor(node.right)
+                # Replace the current node's key-value entry with the smallest node (successor)
+                node.key = successor.key
+                node.value = successor.value
+                # Delete successor node in the right subtree
+                node.right = self.__deleteHelp(node.right, successor.key)
+                # Return the updated Node 
+                return node
+
 
     def traverse(self) -> None:
-        """ TRAVERSE DOCUMENTATION HERE """
+        """ Visits each node in the tree in ascending order """
         self.__traverseHelp(self.__root)
 
     def __traverseHelp(self, node) -> None:
-        """ __TRAVERSEHELP DOCUMENTATION HERE """
-        pass
+        """ A recursive method to help with the traverse() method,
+            which visits each node in the tree in ascending order
+            Arguments: node - the root node of the subtree to traverse
+            Returns: None, but should print each node in the order visited. 
+        """
+        # When node isn't None we continue with the recursive call
+        if node is not None:
+            # Traverse the left subtree
+            self.__traverseHelp(node.left)
+            # Print the current node's key and value
+            print(f"({node.key}, {node.value})")
+            # Traverse the right subtree
+            self.__traverseHelp(node.right)
 
     def __str__(self) -> str:
         """ Represent the tree as a string. Formats as 
