@@ -38,12 +38,15 @@ class BinarySearchTree:
         # Base case - Insert the node as a leaf in the appropriate location
         if node == None:
             return self.__Node(insertKey, insertValue)
+        
         # Insert the key into the left subtree if it is less than the current key
         elif insertKey < node.key:
             node.left = self.__insertHelp(node.left, insertKey, insertValue)
+
         # Insert the key into the right subtree if it is greater than the current key
         elif insertKey > node.key:
             node.right = self.__insertHelp(node.right, insertKey, insertValue)
+
         # Return the node with the node inserted
         return node
 
@@ -54,8 +57,7 @@ class BinarySearchTree:
         """
         # Checks that tree is empty
         return self.__root is None
-        
-    
+            
     def getRoot(self):
         """ getRoot method gets the root node of the BST
             Arguments: None
@@ -81,10 +83,12 @@ class BinarySearchTree:
         
         # Compare goalKey with the current node's key
         if goalKey == node.key:
-            return node  # Found the node with the matching key
+            return node  # return the node with the matching key
+        
         elif goalKey < node.key:
             # Search in the left subtree
             return self.__searchHelp(node.left, goalKey)
+        
         else:
             # Search in the right subtree
             return self.__searchHelp(node.right, goalKey)
@@ -100,6 +104,7 @@ class BinarySearchTree:
         # Check if the node was found, key does not exist in the tree return None
         if node is None:
             return None 
+        
         # Return the value associated with the found node
         else:
             return node.value 
@@ -117,6 +122,7 @@ class BinarySearchTree:
         # Node to the left will be the smallest if node.left is none
         if node.left is None:
             return node
+        
         # Since it isn't the smallest we must continue moving down
         # the left subtree
         else: 
@@ -146,26 +152,59 @@ class BinarySearchTree:
             # Recursively search in the left subtree
             node.left = self.__deleteHelp(node.left, deleteKey)
             return node
+        
         # Compare DeleteKey with node.key
         elif deleteKey > node.key:
             # Assign results to node.right and call __deleteHelp() method
             # Recursively search in the right subtree
             node.right = self.__deleteHelp(node.right, deleteKey)
             return node
+        
         # If key to delete and node.key are the same
         else:
             # Compare different cases that need to be address before deleting
-            # Node has no children
+            # Check if node to delete is the root
+            if node == self.__root:
+                # Root is a leaf node
+                if node.left is None and node.right is None:
+                    self.__root = None
+                    return None
+                
+                # Root has one child
+                elif node.left is None:
+                    self.__root = node.right
+                    return node.right
+                
+                elif node.right is None:
+                    self.__root = node.left
+                    return node.left
+                
+                # Root has two children
+                else:
+                    # Find the in-order successfor, this case it requires the smallest node in the right
+                    successor = self.findSuccessor(node.right)
+                    # Replace the current node's key-value entry with the smallest node (successor)
+                    node.key = successor.key
+                    node.value = successor.value
+                    # Delete successor node in the right subtree
+                    node.right = self.__deleteHelp(node.right, successor.key)
+                    return node
+
+            # Incase the node is not a root node
+            # Node is a leaf which has no children
             if node.right is None and node.left is None:
                 # This removes the node by returning None
                 return None
+            
             # Node has one child
             elif node.left is None:
                 # Replace node with its right child
                 return node.right
+            
             elif node.right is None:
                 # Replace node with its left child
                 return node.left
+            
             # Node has two children
             else:
                 # Find the in-order successfor, this case it requires the smallest node in the right
@@ -175,9 +214,8 @@ class BinarySearchTree:
                 node.value = successor.value
                 # Delete successor node in the right subtree
                 node.right = self.__deleteHelp(node.right, successor.key)
-                # Return the updated Node 
-                return node
-
+        # Return the updated Node 
+        return node
 
     def traverse(self) -> None:
         """ Visits each node in the tree in ascending order """
@@ -242,4 +280,62 @@ class BinarySearchTree:
             return "({}, {})".format(self.key, self.value)
         
 if __name__ == "__main__":
-    pass
+    """
+    # Instantiate our BST
+    bst = BinarySearchTree()
+
+    # Insert node key-value pairs into BST
+    bst.insert(5, "five")
+    bst.insert(4, "four")
+    bst.insert(6, "six")
+    bst.insert(7, "seven")
+    bst.insert(8, "eight")
+    bst.insert(3, "three")
+    bst.insert(2, "two")
+    bst.insert(9, "nine")
+    bst.insert(10, "ten")
+    bst.insert(1, "one")
+
+    # Traverse BST, expect acending order 1-10
+    print("Initial BST Traversal (In-order): ")
+    bst.traverse()
+
+    # Output root node
+    print("\nGet root node: ")
+    print(bst.getRoot())
+
+    # Find key within BST
+    print("\nSearching for a given node key of 3: ")
+    # Prints expected node if it exists
+    print(bst.search(3).key)
+    # With a key not in the BST, expect None
+    print("\nSearching for a given node key of 11: ")
+    print(bst.search(11))
+
+    # Delete a node within BST that doesn't exist, expect Exception
+    #print("\nDeleting node key of 13 from our BST: ")
+    #bst.delete(13)
+
+    # Delete node within BST
+    print("\nDelete node with key 8:")
+    bst.delete(6)
+    # Check that node key '8' was deleted, expect None
+    print(bst.search(6))
+    bst.traverse() # We should see 8 is no longer in the BST
+
+    # Delete node within BST
+    print("\nDelete node with key 4:")
+    bst.delete(4)
+    # Check that node key '4' was deleted, expect None
+    print(bst.search(4))
+    bst.traverse() # We should see 4 is no longer in the BST
+
+    #Delete root node and print updated root node
+    print("\nDelete root node 5:")
+    bst.delete(5)
+    # Check that root node was deleted
+    bst.traverse()
+    # Output new root node, expecting node key of 7
+    print("\nUpdated root node after deleting 5:")
+    print(bst.getRoot())
+    """

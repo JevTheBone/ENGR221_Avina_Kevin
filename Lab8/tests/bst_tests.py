@@ -24,6 +24,96 @@ def nonemptyTree():
     return bst
 
 ####
+# Custom Tests
+####
+
+@pytest.fixture
+# Defining a complext BST for testing
+def complexTree():
+    bst = BinarySearchTree()
+    bst.insert(5, "five")
+    bst.insert(3, "three")
+    bst.insert(8, "eight")
+    bst.insert(4, "four")
+    bst.insert(2, "two")
+    bst.insert(7, "seven")
+    bst.insert(9, "nine")
+    bst.insert(6, "six")
+    bst.insert(10, "ten")
+    bst.insert(1, "one")
+    return bst
+
+####
+# getRoot
+####
+
+@pytest.mark.getRoot
+# getRoot functionality after deleting root from BST
+def test_bst_getRoot_updatedComplexTreeRoot(complexTree):
+    # Delete current root node
+    complexTree.delete(5)
+    # Should return 6
+    assert complexTree.getRoot().key == 6
+
+####
+# Search
+####
+
+@pytest.mark.search
+# Search functionality for complex BST not existing key
+def test_bst_search_notInComplexTree(complexTree):
+    assert complexTree.search(12) == None
+
+@pytest.mark.search
+# Search functionality for complex BST an existing key
+def test_bst_search_inComplexTree(complexTree):
+    assert complexTree.search(7).key == 7
+
+####
+# Delete
+####
+
+@pytest.mark.delete
+# Delete functionality for complex BST
+def test_bst_delete_complexTreeLeaf(complexTree, capfd):
+    complexTree.delete(2)
+    # Print the tree
+    print(complexTree)
+    # Capture the output
+    out, _ = capfd.readouterr()
+    # Confirm that the output has 2 removed
+    assert out == "{(5, five), {(3, three), {(1, one), None, None}, {(4, four), None, None}}, {(8, eight), {(7, seven), {(6, six), None, None}, None}, {(9, nine), None, {(10, ten), None, None}}}}\n"
+
+####
+# findSuccessor
+####
+
+@pytest.mark.findSuccessor
+# findSuccessor functionality for complex BST
+def test_bst_findSuccessor_complexTree(complexTree):
+    complexTree.delete(1)
+    # Should return smallest value in the tree after deleting node 1
+    assert complexTree.findSuccessor(complexTree.getRoot()).key == 2
+
+####
+# Lookup
+####
+
+@pytest.mark.lookup
+# Lookup functionality for a BST
+def test_bst_lookup_complexTreePresent(complexTree):
+    try:
+        # This should throw an exception
+        complexTree.lookup(4)
+    except:
+        # If we got here, an exception was thrown
+        assert False 
+
+####
+# End of Custom Tests
+####
+
+####
 # isEmpty
 ####
 
