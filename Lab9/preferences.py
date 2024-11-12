@@ -33,7 +33,7 @@ class Preferences:
     NUM_CELLS_TALL = 30 
 
     # Size of each cell in pixels
-    CELL_SIZE = 32
+    CELL_SIZE = 25
 
     # Dimensions of the board in pixels
     GAME_BOARD_WIDTH = NUM_CELLS_WIDE * CELL_SIZE
