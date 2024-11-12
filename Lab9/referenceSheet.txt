@@ -1,0 +1,10 @@
+Organize a reference sheet to remind you of what a class does or in which class some functionality exists.
+While progressing through this assignment update and revisit this reference as needed.
+Upload a picture of this reference sheet at the end of the assignment.
+
+Notes to include:
+1. The attributes of each class (the data each class contains)
+2. The methods of each class (what each class knows how to do)
+3. What the cellTypes(enum defined in BoardCell) and SnakeMode(enum defined in GameData) are
+
+
