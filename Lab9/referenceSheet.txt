@@ -7,4 +7,101 @@ Notes to include:
 2. The methods of each class (what each class knows how to do)
 3. What the cellTypes(enum defined in BoardCell) and SnakeMode(enum defined in GameData) are
 
+*** NO CHANGES WILL BE MADE TO THIS CLASS ***
 
+Class BoardCell() - handles row and column data attributes, including cell info, search and modification.
+
+from preferences import Preferences // from enum import Enum
+Methods for Basic Cell Information:                                     Methods to modify basic cell info:
+getRow() - gets the row of the cell                                     becomeWall() - Changes the cell to a wall
+getCol() - gets the column of the cell                                  becomeFood() - Change the cell to food
+isWall() - returns whether or not this cell is a wall                   becomeEmpty() - Change this cell to empty
+isEmpty() - returns whether or not this cell is empty                   becomeHead() - Change this cell to the snake's head
+isFood() - returns whether or not this cell is food                     becomeBody() - Change the cell part of the snake's body
+isHead() - returns whether or not this cell is the head of the snake    
+isBody() - returns whether or not cell is part of the snake's body      
+getCellColor() - returns the color associated with the type of cell     
+
+Methods for search info:
+setAddedToSearchList() - Indicate cell has been added
+alreadyAddedToSearchList() - Returns whether or not cell was added to search list
+clearSearchInfo() - Reset the search attributes
+setParent(parent) - Set the parent of this cell
+getParent() - Return the parent of this cell
+
+CellType(Enum) - enumeration representing possible types of cells and string representations,
+ensures we don't assign invalid type to a cell
+WALL = "*"  EMPTY = " "  FOOD = "X"  HEAD = "H"  BODY = "B"
+
+*** END of BoardCell Class ***
+
+*** Changes to be made: updateGraphics() - implement code to draw the board ***
+
+Class BoardDisplay() - Handles the display where the board is drawn.
+from preferences import Preferences
+
+Consists of the following methods:
+updateGraphics(gameData) - Re-draws the board, food, and snake baed on current board state
+clear() - Resets the background of display
+drawSquare(cell) - Draws a cell-sized square at the given location with cell input
+drawImage(row, col, image) - Displays an image at the given cell location
+displayGameOver() - Displays the game over message
+
+*** END of BoardDisplay Class ***
+
+*** Changes to be made: checkKeypress(), advanceSnake(), 
+getNextCellFromBFS(), getFirstCellInPath(), reverseSnake()  ***
+
+Class Controller() - Initializes board for a new game and handles current 
+state of the board using GameData() and BoardDisplay()
+
+from preferences import Preferences // from gameData import GameData 
+// from boardDisplay import BoardDisplay
+
+Consists of the following methods:
+startNewGame() - Initializes the baord for a new game
+gameOver() - Indicate that the player has lost
+run() - Main loop of the game
+cycle() - Main behavior of each time step
+checkKeypress() - Update the game based on user input
+updateSnake() - Move the snake as directed
+advanceSnake(nextCell) - Update board to move the snake's head to a given cell
+updateFood() - Add's food based on FOOD_ADD_RATE cycles
+getNextCellFromBFS() - Uses BFS to search for food closest to head of snake
+getFirstCellInPath(foodCell) - 
+reverseSnake() - 
+
+Keypress(Enum) - Defines valid keyboard inputs to prevent from assigning invalid value
+UP = pygame.K_i, pygame.K_UP        # i and up arrow key
+DOWN = pygame.K_k, pygame.K_DOWN    # k and down arrow key
+LEFT = pygame.K_j, pygame.K_LEFT    # j and left arrow key
+RIGHT = pygame.K_l, pygame.K_RIGHT  # l and right arrow key
+REVERSE = pygame.K_r,               # r
+AI = pygame.K_a,                    # a
+
+*** END of Controller Class ***
+
+*** Changes to be made: getNextCellInDir() in neighbor method ***
+
+Class GameData() - Handles board Dimensions (in cells)
+
+from boardCell import BoardCell // from preferences import Preferences
+
+Initialization Methods          Information about the board         Food related methods
+
+Snake movement methods          Methods to access neighbors         Methods to set the snake's mode
+
+Methods to access the snake     Helper method for the display       Helper Method for reverse movement
+
+Methods for AI implementation   Methods for Game over               Helpers for printing and debugging
+
+SnakeMode(Enum) - Represents the valid SnakeModes, ensure we don't accidentally
+use an invalid mode. auto() is used when value of objects doesn't matter.
+
+GOING_NORTH = auto()
+GOING_SOUTH = auto()
+GOING_EAST = auto()
+GOING_WEST = auto()
+AI_MODE = auto()
+
+*** END of GameData Class ***
