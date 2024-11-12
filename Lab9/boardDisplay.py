@@ -1,11 +1,10 @@
 """
-Author: Prof. Alyssa
-Description: Creates and displays the graphics
-    based on the current state of the board.
+Author: Kevin Avina-Gutierrez
 
-Assignment adapted from HMC CS60
+Description: Creates and displays the graphics based on the current state of the board.
+We can make changes allowing us to draw the argument gameData
 
-TODO Update this program header
+Last updated on: 11/11/2024
 """
 
 import pygame
