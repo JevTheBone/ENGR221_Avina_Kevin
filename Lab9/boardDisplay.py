@@ -4,7 +4,7 @@ Author: Kevin Avina-Gutierrez
 Description: Creates and displays the graphics based on the current state of the board.
 We can make changes allowing us to draw the argument gameData
 
-Last updated on: 11/12/2024
+Last updated on: 11/13/2024
 """
 
 import pygame
@@ -23,17 +23,14 @@ class BoardDisplay:
         
         # Clear the board
         self.clear()
-
-        # Draw the board
-        gameData.createBoard()
-        # TODO Add your code to draw the board here!
-        # You may find the below drawSquare method helpful
-
-        # Get the food's position that we'll use to add
-        placeFood = gameData.addFood(gameData.getCell())
         
-        # Use drawSquare method to draw the cell on our board
-        self.drawSquare(placeFood)
+        # Using row and columns coordinates to draw our cells
+        # Iterate through each row in the board
+        for row in range(Preferences.NUM_CELLS_TALL):
+            # Iterate through each column in the board 
+            for col in range(Preferences.NUM_CELLS_WIDE):
+                # gameData gets the state of each cell to input into drawSquare to draw
+                self.drawSquare(gameData.getCell(row, col)) 
 
         # Draw the game over message, if appropriate
         if gameData.getGameOver():

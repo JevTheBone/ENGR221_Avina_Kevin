@@ -1,10 +1,10 @@
 """
-Author: Prof. Alyssa
-Represents the current state of the game.
+Author: Kevin Avina-Gutierrez
 
-Assignment adapted from HMC CS60
+Description: This file represents the current state of the game. Hold snake movement methods and 
+CellNeighbor methods for cell implementation changes. 
 
-TODO Update this program header
+Last updated on: 11/13/2024
 """
 
 from boardCell import BoardCell
@@ -148,19 +148,44 @@ class GameData:
 
     def getNorthNeighbor(self, cell): 
         """ Returns the cell to the north of the given cell """
-        return # TODO
-        
+        # Use cell row to ensure we are within bounds of the game
+        northRow = cell.row - 1
+
+        # Check northRow is within bounds
+        if northRow < 0:
+            raise Exception("Error: North cell is out of display bounds")
+        # Return cell to the north of given cell
+        return (northRow, cell.col)
+
     def getSouthNeighbor(self, cell):
         """ Returns the cell to the south of the given cell """
-        return # TODO
+        # Use cell row to ensure we are within bounds
+        southRow = cell.row + 1
+        # Check southRow is within bounds
+        if southRow < 0: 
+            raise Exception("Error: South cell is out of display bounds")
+        # Return cell to the south of the given cell
+        return (southRow, cell.col)
     
     def getEastNeighbor(self, cell):
         """ Returns the cell to the east of the given cell """
-        return # TODO
+        # Use cell col to ensure we are within bounds
+        eastCol = cell.col + 1
+        # Check eastCol is within bounds
+        if eastCol < 0: 
+            raise Exception("Error: East cell is out of display bounds")
+        # Return cell to the east of the given cell
+        return (cell.row, eastCol)
     
     def getWestNeighbor(self, cell):
         """ Returns the cell to the west of the given cell """
-        return # TODO
+        # Use cell col to ensure we are within bounds
+        westCol = cell.col - 1
+        # Check westCol is within bounds
+        if westCol < 0: 
+            raise Exception("Error: West cell is out of display bounds")
+        # Return cell to the west of the given cell
+        return (cell.row, westCol)
     
     def getHeadNorthNeighbor(self):
         """ Returns the cell to the north of the snake's head """
@@ -181,7 +206,7 @@ class GameData:
     def getNextCellInDir(self):
         """ Returns the next cell in the snake's path based
             on its current direction (self.__currentMode) """
-        return # TODO
+
 
     def getNeighbors(self, center):
         """ Returns a set of the neighbors around the given cell """

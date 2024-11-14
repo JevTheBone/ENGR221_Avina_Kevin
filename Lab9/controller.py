@@ -1,11 +1,10 @@
 """
-Author: Prof. Alyssa
-The Controller of the game, including handling key presses
+Author: Kevin Avina-Gutierrez
+
+Description: The Controller of the game, including handling key presses
 (and AI in the next assignment). You will update this file.
 
-Adapted from HMC CS60
-
-TODO Update this program header
+Last updated on: 11/13/2024
 """
 
 from preferences import Preferences
