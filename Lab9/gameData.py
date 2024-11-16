@@ -4,7 +4,7 @@ Author: Kevin Avina-Gutierrez
 Description: This file represents the current state of the game. Hold snake movement methods and 
 CellNeighbor methods for cell implementation changes. 
 
-Last updated on: 11/13/2024
+Last updated on: 11/15/2024
 """
 
 from boardCell import BoardCell
@@ -206,7 +206,18 @@ class GameData:
     def getNextCellInDir(self):
         """ Returns the next cell in the snake's path based
             on its current direction (self.__currentMode) """
+        # Get the position of the snake's head
+        currentCell = self.getSnakeHead()
 
+        # Check for each required argument to determine which cell direction we should change
+        if self.__currentMode == "GOING_NORTH":
+            return self.getHeadNorthNeighbor(currentCell)
+        elif self.__currentMode == "GOING_SOUTH":
+            return self.getHeadSouthNeighbor(currentCell)
+        elif self.__currentMode == "GOING_EAST":
+            return self.getHeadEastNeighbor(currentCell)
+        else:
+            return self.getHeadWestNeighbor(currentCell)
 
     def getNeighbors(self, center):
         """ Returns a set of the neighbors around the given cell """

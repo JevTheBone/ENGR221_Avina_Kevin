@@ -4,7 +4,7 @@ Author: Kevin Avina-Gutierrez
 Description: The Controller of the game, including handling key presses
 (and AI in the next assignment). You will update this file.
 
-Last updated on: 11/13/2024
+Last updated on: 11/15/2024
 """
 
 from preferences import Preferences
@@ -123,6 +123,23 @@ class Controller():
 
         # TODO Possibly add code here, using the helper methods
         # in gameData.py under the "snake movement methods" header
+
+        # Changes to be made here to allow the snake to move.
+        # Step 1: Determine the next cell in the snake's path
+        nextCell = self.getNextCellInDir()
+    
+        # Step 2: Check the type of nextCell and handle each case
+        if nextCell.isFood():
+            # a. Move the head to nextCell
+            self.gameData.moveHeadTo(nextCell)  # Helper method in gameData
+            # b. Add nextCell to snake's body, but keep the tail in the same spot to grow
+        
+        elif nextCell.isEmpty():
+            # a. Move the head to nextCell
+            self.gameData.moveHeadTo(nextCell)  # Helper method in gameData
+            # b. Remove the last cell of the tail
+            self.gameData.removeTail()  # Helper method in gameData
+
 
     def updateFood(self):
         """ Add food every FOOD_ADD_RATE cycles or if there is no food """
