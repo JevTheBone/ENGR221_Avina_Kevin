@@ -88,9 +88,22 @@ class Controller():
                 # Enter AI mode
                 elif event.key in self.Keypress.AI.value:
                     self.__data.setAIMode()
-                # Change directions
-                    
-                # TODO fill in to change snake direction
+
+                # Changes direction to the right
+                elif event.key in self.Keypress.RIGHT.value:
+                    self.__data.setDirectionEast()
+
+                # Changes direction going up
+                elif event.key in self.Keypress.UP.value:
+                    self.__data.setDirectionNorth()
+
+                # Changes direction to the left
+                elif event.key in self.Keypress.LEFT.value:
+                    self.__data.setDirectionWest()
+
+                # Changes direction going down
+                elif event.key in self.Keypress.DOWN.value:
+                    self.__data.setDirectionSouth()
 
     def updateSnake(self):
         """ Move the snake forward one step, either in the current 
@@ -120,25 +133,13 @@ class Controller():
         elif nextCell.isFood():
             self.playSound_eat()
             # TODO Tell __data that we ate food!
+            self.__data.eatFood(nextCell)
 
         # TODO Possibly add code here, using the helper methods
         # in gameData.py under the "snake movement methods" header
-
-        # Changes to be made here to allow the snake to move.
-        # Step 1: Determine the next cell in the snake's path
-        nextCell = self.getNextCellInDir()
-    
-        # Step 2: Check the type of nextCell and handle each case
-        if nextCell.isFood():
-            # a. Move the head to nextCell
-            self.gameData.moveHeadTo(nextCell)  # Helper method in gameData
-            # b. Add nextCell to snake's body, but keep the tail in the same spot to grow
-        
-        elif nextCell.isEmpty():
-            # a. Move the head to nextCell
-            self.gameData.moveHeadTo(nextCell)  # Helper method in gameData
-            # b. Remove the last cell of the tail
-            self.gameData.removeTail()  # Helper method in gameData
+        else: 
+            # Move snake to the next cell
+            self.__data.snakeMovement(nextCell)
 
 
     def updateFood(self):

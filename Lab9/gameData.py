@@ -140,7 +140,30 @@ class GameData:
     # Snake movement methods #
     ##########################
 
-    # TODO Add method(s) here to support the controller's advanceSnake method!
+    def eatFood(self, foodCell):
+        """ Update the stae of the baor dto reflect food has been eaten """
+        # Change the current head to a body
+        self.getSnakeHead().becomeBody()
+
+        # Food cell becomes new head
+        foodCell.becomeHead()
+        self.__snakeCells.append(foodCell)
+
+        self.__foodCells.remove(foodCell)
+
+    def snakeMovement(self, nextCell):
+        """ Move the snake to the next cell on the board """
+        # Change current cell assigned to the snakes head as part of the body
+        self.getSnakeHead().becomeBody()
+
+        # Assign the nextCell to become the snake's head
+        nextCell.becomeHead()
+
+        # Add new head cell to snakeCells list
+        self.__snakeCells.insert(0, nextCell)
+
+        # Remove the tail fo the snake
+        self.__snakeCells.pop().becomeEmpty()
 
     ###############################
     # Methods to access neighbors #
@@ -148,44 +171,23 @@ class GameData:
 
     def getNorthNeighbor(self, cell): 
         """ Returns the cell to the north of the given cell """
-        # Use cell row to ensure we are within bounds of the game
-        northRow = cell.row - 1
-
-        # Check northRow is within bounds
-        if northRow < 0:
-            raise Exception("Error: North cell is out of display bounds")
-        # Return cell to the north of given cell
-        return (northRow, cell.col)
+        # Update values to return for the cell in the north direction
+        return self.getCell(cell.getRow() - 1, cell.getCol())
 
     def getSouthNeighbor(self, cell):
         """ Returns the cell to the south of the given cell """
-        # Use cell row to ensure we are within bounds
-        southRow = cell.row + 1
-        # Check southRow is within bounds
-        if southRow < 0: 
-            raise Exception("Error: South cell is out of display bounds")
-        # Return cell to the south of the given cell
-        return (southRow, cell.col)
+        # Update values to return for the cell in the south direction
+        return self.getCell(cell.getRow() + 1, cell.getCol())
     
     def getEastNeighbor(self, cell):
         """ Returns the cell to the east of the given cell """
-        # Use cell col to ensure we are within bounds
-        eastCol = cell.col + 1
-        # Check eastCol is within bounds
-        if eastCol < 0: 
-            raise Exception("Error: East cell is out of display bounds")
-        # Return cell to the east of the given cell
-        return (cell.row, eastCol)
+        # Update values to return for the cell in the east direction
+        return self.getCell(cell.getRow(), cell.getCol() + 1)
     
     def getWestNeighbor(self, cell):
         """ Returns the cell to the west of the given cell """
-        # Use cell col to ensure we are within bounds
-        westCol = cell.col - 1
-        # Check westCol is within bounds
-        if westCol < 0: 
-            raise Exception("Error: West cell is out of display bounds")
-        # Return cell to the west of the given cell
-        return (cell.row, westCol)
+        # Update values to return for the cell in the west direction
+        return self.getCell(cell.getRow(), cell.getCol() - 1)
     
     def getHeadNorthNeighbor(self):
         """ Returns the cell to the north of the snake's head """
@@ -206,18 +208,22 @@ class GameData:
     def getNextCellInDir(self):
         """ Returns the next cell in the snake's path based
             on its current direction (self.__currentMode) """
-        # Get the position of the snake's head
-        currentCell = self.getSnakeHead()
+        # Acquire current cell information for comparison
+        currentCell = None
 
         # Check for each required argument to determine which cell direction we should change
-        if self.__currentMode == "GOING_NORTH":
-            return self.getHeadNorthNeighbor(currentCell)
-        elif self.__currentMode == "GOING_SOUTH":
-            return self.getHeadSouthNeighbor(currentCell)
-        elif self.__currentMode == "GOING_EAST":
-            return self.getHeadEastNeighbor(currentCell)
-        else:
-            return self.getHeadWestNeighbor(currentCell)
+        match self.__currentMode:
+            case self.SnakeMode.GOING_NORTH:
+                currentCell = self.getNorthNeighbor(self.getSnakeHead())
+            case self.SnakeMode.GOING_SOUTH:
+                currentCell = self.getSouthNeighbor(self.getSnakeHead())
+            case self.SnakeMode.GOING_EAST:
+                currentCell = self.getEastNeighbor(self.getSnakeHead())
+            case self.SnakeMode.GOING_WEST:
+                currentCell = self.getWestNeighbor(self.getSnakeHead())
+
+        return currentCell
+
 
     def getNeighbors(self, center):
         """ Returns a set of the neighbors around the given cell """
