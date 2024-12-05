@@ -4,7 +4,7 @@ Author: Kevin Avina-Gutierrez
 Description: The Controller of the game, including handling key presses
 (and AI in the next assignment). You will update this file.
 
-Last updated on: 11/15/2024
+Last updated on: 12/04/2024
 """
 
 from preferences import Preferences
@@ -132,11 +132,8 @@ class Controller():
         # If we eat food, update the state of the board
         elif nextCell.isFood():
             self.playSound_eat()
-            # TODO Tell __data that we ate food!
-            self.__data.eatFood(nextCell)
 
-        # TODO Possibly add code here, using the helper methods
-        # in gameData.py under the "snake movement methods" header
+            self.__data.eatFood(nextCell)
         else: 
             # Move snake to the next cell
             self.__data.snakeMovement(nextCell)
@@ -177,11 +174,13 @@ class Controller():
         return foodCell
     
     def reverseSnake(self):
-        """ TODO COMMENT HERE """
+        """ ReverseSnake method should change the current direction of the snake
+            while updating the head/body's cell accordingly. """
 
-        # TODO
-
-        pass
+        GameData.unlabelHead() # Update the snake's head position relative to the body by unlabeling current head
+        GameData.reverseSnakeCells() # Reverse the snake's body based on the current body cells
+        GameData.relabelNewHead() # Relabel the new head according to its relative position in the opposite direction
+        GameData.updateSnakeDirection() # Recalculate direction of the snake based on the body/heads last position.
 
     def playSound_eat(self):
         """ Plays an eating sound """

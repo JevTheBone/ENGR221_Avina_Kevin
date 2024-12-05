@@ -4,7 +4,7 @@ Author: Kevin Avina-Gutierrez
 Description: This file represents the current state of the game. Hold snake movement methods and 
 CellNeighbor methods for cell implementation changes. 
 
-Last updated on: 11/15/2024
+Last updated on: 12/04/2024
 """
 
 from boardCell import BoardCell
@@ -294,14 +294,42 @@ class GameData:
     ################################
     # Helper method(s) for reverse #
     ################################
-    
-    # TODO Write method(s) here to help reverse the snake
 
-    # Steps:
-    #  - Unlabel the head
-    #  - Reverse the body
-    #  - Relabel the head
-    #  - Calculate the new direction of the snake
+    """ These methods help us implement the reverse movement method in our Controller.py file
+        - unableHead
+        - reverseSnakeCells
+        - relableNewHead
+        - updateSnakeDirection
+    """
+
+    def unlabelHead(self): 
+        # Change the current head into a body cell by unlabeling the Head
+        self.getSnakeHead().becomeBody()
+    
+    def reverseSnakeCells(self):
+        # Reverse the list of cells that make up the snake
+        if len(self.__snakeCells) >= 1:
+            self.__snakeCells.reverse()
+    
+    def relabelNewHead(self):
+        # Label the new head after reversing the snake
+        self.getSnakeHead().becameHead()
+        self.__snakeCells[-1].becomeEmtpy() # clear the old tail value to prevent collisions
+    
+    def updateSnakeDirection(self):
+        # Calculate and Updates the snake's direction based on 
+        # the new head and neck position
+        head = self.getSnakeHead()
+        neck = self.getSnakeNeck()
+
+        if head.getRow() < neck.getRow():
+            self.setDirectionNorth()
+        elif head.getRow() > neck.getRow():
+            self.setDirectionSouth()
+        elif head.getCol() < neck.getCol():
+            self.setDirectionWest()
+        elif head.getCol() > neck.getCol():
+            self.setDirectionEast()
 
     #################################
     # Methods for AI implementation #
