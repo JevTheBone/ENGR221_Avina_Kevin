@@ -4,7 +4,7 @@ Author: Kevin Avina-Gutierrez
 Description: The Controller of the game, including handling key presses
 (and AI in the next assignment). You will update this file.
 
-Last updated on: 12/04/2024
+Last updated on: 12/08/2024
 """
 
 from preferences import Preferences
@@ -56,8 +56,10 @@ class Controller():
         while not self.__data.getGameOver():
             # Run the main behavior
             self.cycle() 
-            # Sleep
-            clock.tick(Preferences.SLEEP_TIME)
+            # Adjust the sleep time dynamically
+            baseSpeed = Preferences.SLEEP_TIME
+            currentSpeed = baseSpeed / self.__data.getSpeedMultiplier()
+            clock.tick(currentSpeed)
 
     def cycle(self):
         """ The main behavior of each time step """
@@ -134,9 +136,17 @@ class Controller():
             self.playSound_eat()
 
             self.__data.eatFood(nextCell)
+            # Update the score
+            self.__data.increaseScore()
+
+            # Increase speed after every certain consecutive food items eaten
+            if self.__data.getConsecutiveFood() % 2 == 0:
+                self.__data.__speedMultiplier += 10
         else: 
             # Move snake to the next cell
             self.__data.snakeMovement(nextCell)
+            # Reset streak if no food is eaten
+            self.__data.resetConsecutiveFood()
 
 
     def updateFood(self):
@@ -161,26 +171,49 @@ class Controller():
         cellsToSearch.put(head)
 
         # Search!
-        # TODO implement BFS here
+        while not cellsToSearch.empty():
+
+            currentCell = cellsToSearch.get() # get the next cell in the queue
+
+            # If we found food, return the first cell in the path to it
+            if currentCell.isFood(): 
+                return self.getFirstCellInPath(currentCell)
+            
+            # Otherwise, add all the neighbors to the queue
+            for neighbor in self.__data.getNeighbors(currentCell):
+
+                # If the neighbor is not already added to the search list and is not a wall, add it
+                if not neighbor.alreadyAddedToSearchList() and not neighbor.isWall() and not neighbor.isBody():
+                    neighbor.setAddedToSearchList()
+                    neighbor.setParent(currentCell)
+                    cellsToSearch.put(neighbor)
 
         # If the search failed, return a random neighbor
         return self.__data.getRandomNeighbor(head)
 
     def getFirstCellInPath(self, foodCell):
-        """ TODO COMMENT HERE """
+        """ Helper method that returns the first cell in the path to the food cell """
 
-        # TODO
-        
-        return foodCell
+        currentCell = foodCell # start at the food cell
+
+        # Keep moving back until we find the head of the snake
+        while currentCell.getParent() != self.__data.getSnakeHead():
+            currentCell = currentCell.getParent()
+
+        #print("First cell in path: ", currentCell) # debugging
+        return currentCell # return the cell that brings the snake to the food the fastest
     
     def reverseSnake(self):
         """ ReverseSnake method should change the current direction of the snake
             while updating the head/body's cell accordingly. """
-
-        GameData.unlabelHead() # Update the snake's head position relative to the body by unlabeling current head
-        GameData.reverseSnakeCells() # Reverse the snake's body based on the current body cells
-        GameData.relabelNewHead() # Relabel the new head according to its relative position in the opposite direction
-        GameData.updateSnakeDirection() # Recalculate direction of the snake based on the body/heads last position.
+    
+        self.__data.unlabelHead() # Update the snake's head position relative to the body by unlabeling current head
+    
+        self.__data.reverseSnakeCells() # Reverse the snake's body based on the current body cells
+    
+        self.__data.relabelNewHead() # Relabel the new head according to its relative position in the opposite direction
+    
+        self.__data.updateSnakeDirection() # Recalculate direction of the snake based on the body/heads last position.
 
     def playSound_eat(self):
         """ Plays an eating sound """

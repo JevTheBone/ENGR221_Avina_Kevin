@@ -4,7 +4,7 @@ Author: Kevin Avina-Gutierrez
 Description: Creates and displays the graphics based on the current state of the board.
 We can make changes allowing us to draw the argument gameData
 
-Last updated on: 11/13/2024
+Last updated on: 12/08/2024
 """
 
 import pygame
@@ -16,6 +16,8 @@ class BoardDisplay:
         self.__display = pygame.display.set_mode((Preferences.GAME_BOARD_WIDTH, Preferences.GAME_BOARD_HEIGHT))
         # Image to show as the "head"
         self.headImage = None
+        # Rendering the score on the screen with a set font
+        self.font = pygame.font.SysFont("arial", 36)
 
     def updateGraphics(self, gameData):
         """ Re-draws the board, food, and snake based
@@ -35,6 +37,9 @@ class BoardDisplay:
         # Draw the game over message, if appropriate
         if gameData.getGameOver():
             self.displayGameOver()
+
+        # Draw the score on the screen
+        self.drawScore(self.__display, gameData.getScore())
 
         # Update the display
         pygame.display.update()
@@ -89,3 +94,9 @@ class BoardDisplay:
         textRect.center = (Preferences.GAME_OVER_X, Preferences.GAME_OVER_Y)
         # Place the game over text on the display
         self.__display.blit(text, textRect)
+    
+    def drawScore(self, screen, score):
+        """ Display the score on the screen """
+        scoreText = self.font.render(f"Score: {score}", True, pygame.Color('black'))
+        # Adjust the position of the score on the board
+        screen.blit(scoreText, (25, 20))

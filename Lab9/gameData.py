@@ -4,7 +4,7 @@ Author: Kevin Avina-Gutierrez
 Description: This file represents the current state of the game. Hold snake movement methods and 
 CellNeighbor methods for cell implementation changes. 
 
-Last updated on: 12/04/2024
+Last updated on: 12/08/2024
 """
 
 from boardCell import BoardCell
@@ -38,6 +38,15 @@ class GameData:
 
         # Whether or not the game is over
         self.__gameOver = False
+
+        # Initialize the score
+        self.__score = 0
+
+        # Number of food iteams eaten consecutively
+        self.__consecutiveFood = 0
+
+        # Speed multiplier for faster gameplay
+        self.__speedMultiplier = 1.0
 
     ##########################
     # Initialization methods #
@@ -301,20 +310,17 @@ class GameData:
         - relableNewHead
         - updateSnakeDirection
     """
-
     def unlabelHead(self): 
         # Change the current head into a body cell by unlabeling the Head
         self.getSnakeHead().becomeBody()
     
     def reverseSnakeCells(self):
         # Reverse the list of cells that make up the snake
-        if len(self.__snakeCells) >= 1:
-            self.__snakeCells.reverse()
+        self.__snakeCells = self.__snakeCells[::-1]
     
     def relabelNewHead(self):
         # Label the new head after reversing the snake
-        self.getSnakeHead().becameHead()
-        self.__snakeCells[-1].becomeEmtpy() # clear the old tail value to prevent collisions
+        self.getSnakeHead().becomeHead()
     
     def updateSnakeDirection(self):
         # Calculate and Updates the snake's direction based on 
@@ -351,6 +357,35 @@ class GameData:
     def getGameOver(self):
         """ Check the game over value """
         return self.__gameOver
+    
+    ##############################
+    # Methods for Tracking Score #
+    ##############################
+
+    def getScore(self):
+        """ Return the current score """
+        return self.__score
+    
+    def increaseScore(self, amount = 1):
+        """ Increase the score by a given amount """
+        self.__score += amount
+        self.__consecutiveFood += 1
+
+    #######################################
+    # Methods for Speed Boost on a streak #
+    #######################################
+
+    def resetConsecutiveFood(self):
+        """ Reset's the streak of consecutive food eaten """
+        self.__consecutiveFood = 0
+
+    def getConsecutiveFood(self):
+        """ Return the number of consecutive food items eaten """
+        return self.__consecutiveFood
+    
+    def getSpeedMultiplier(self):
+        """ Return the current speed multiplier """
+        return self.__speedMultiplier
     
     ######################################
     # Helpers for printing and debugging #
